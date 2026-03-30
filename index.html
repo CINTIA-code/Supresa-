@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Algo Especial...</title>
+
+<style>
+body{
+font-family: Arial, sans-serif;
+background: linear-gradient(120deg,#ff9a9e,#fad0c4);
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+text-align:center;
+color:white;
+}
+
+.container{
+background: rgba(0,0,0,0.3);
+padding:30px;
+border-radius:15px;
+}
+
+h1{
+font-size:30px;
+}
+
+#contador{
+font-size:35px;
+margin-top:20px;
+}
+
+.surpresa{
+display:none;
+font-size:30px;
+}
+
+.legenda{
+margin-top:20px;
+font-style: italic;
+font-size:18px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Algo especial está chegando... 🎁</h1>
+
+<h2>Para Larissa 💜</h2>
+
+<div id="contador"></div>
+
+<div class="legenda">
+"You got the best of me" 🎵
+</div>
+
+<div class="surpresa" id="surpresa">
+🎉 Feliz Aniversário, Larissa! 🎉  
+<br><br>
+Você é muito especial pra mim 💜  
+<br><br>
+"You got the best of me" 🎶
+</div>
+
+</div>
+
+<!-- Música -->
+<audio autoplay loop>
+<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
+</audio>
+
+<script>
+
+var data = new Date("April 5, 2026 00:00:00").getTime();
+
+var x = setInterval(function(){
+
+var agora = new Date().getTime();
+
+var distancia = data - agora;
+
+var dias = Math.floor(distancia / (1000 * 60 * 60 * 24));
+var horas = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+var minutos = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60));
+var segundos = Math.floor((distancia % (1000 * 60)) / 1000);
+
+document.getElementById("contador").innerHTML =
+dias + "d " + horas + "h "
++ minutos + "m " + segundos + "s ";
+
+if (distancia < 0) {
+clearInterval(x);
+document.getElementById("contador").style.display = "none";
+document.getElementById("surpresa").style.display = "block";
+}
+
+}, 1000);
+
+</script>
+
+</body>
+</html>
