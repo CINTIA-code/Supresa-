@@ -3,45 +3,61 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Algo Especial...</title>
+
+<title>Para Larissa</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family: 'Poppins', sans-serif;
+}
+
 body{
-font-family: Arial, sans-serif;
-background: linear-gradient(120deg,#ff9a9e,#fad0c4);
 height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
+background:#ffd6e7;
+color:#444;
 text-align:center;
-color:white;
 }
 
 .container{
-background: rgba(0,0,0,0.3);
-padding:30px;
-border-radius:15px;
+background:#fff0f6;
+padding:40px;
+border-radius:20px;
+box-shadow:0 10px 30px rgba(0,0,0,0.1);
+max-width:400px;
 }
 
 h1{
-font-size:30px;
+font-weight:600;
+margin-bottom:15px;
 }
 
 #contador{
-font-size:35px;
-margin-top:20px;
+font-size:28px;
+margin:20px 0;
+font-weight:600;
 }
 
-.surpresa{
+.mensagem{
 display:none;
-font-size:30px;
+font-size:18px;
+line-height:1.6;
 }
 
-.legenda{
-margin-top:20px;
-font-style: italic;
-font-size:18px;
+.nome{
+font-size:22px;
+font-weight:600;
+margin-bottom:15px;
 }
+
 </style>
 
 </head>
@@ -50,30 +66,33 @@ font-size:18px;
 
 <div class="container">
 
-<h1>Algo especial está chegando... 🎁</h1>
+<h1>Algo bonito está chegando ✨</h1>
 
-<h2>Para Larissa 💜</h2>
+<div class="nome">Larissa</div>
 
 <div id="contador"></div>
 
-<div class="legenda">
-"You got the best of me" 🎵
+<div class="mensagem" id="mensagem">
+
+Larissa,  
+
+Você não é comum.  
+Você é daquelas pessoas raras,  
+que têm luz própria,  
+que transformam o ambiente,  
+que fazem tudo ficar mais leve.  
+
+Seu jeito é único,  
+autêntico, bonito e diferente.  
+
+O mundo fica mais interessante  
+simplesmente porque você existe.  
+
+Feliz aniversário ✨💗
+
 </div>
 
-<div class="surpresa" id="surpresa">
-🎉 Feliz Aniversário, Larissa! 🎉  
-<br><br>
-Você é muito especial pra mim 💜  
-<br><br>
-"You got the best of me" 🎶
 </div>
-
-</div>
-
-<!-- Música -->
-<audio autoplay loop>
-<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
-</audio>
 
 <script>
 
@@ -91,13 +110,13 @@ var minutos = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60));
 var segundos = Math.floor((distancia % (1000 * 60)) / 1000);
 
 document.getElementById("contador").innerHTML =
-dias + "d " + horas + "h "
-+ minutos + "m " + segundos + "s ";
+dias + "d " + horas + "h " +
+minutos + "m " + segundos + "s ";
 
 if (distancia < 0) {
 clearInterval(x);
 document.getElementById("contador").style.display = "none";
-document.getElementById("surpresa").style.display = "block";
+document.getElementById("mensagem").style.display = "block";
 }
 
 }, 1000);
