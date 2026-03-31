@@ -4,9 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Para Larissa</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<title>Larissa</title>
 
 <style>
 
@@ -19,43 +17,63 @@ font-family: 'Poppins', sans-serif;
 
 body{
 height:100vh;
+background:#ffd6e7;
 display:flex;
 justify-content:center;
 align-items:center;
-background:#ffd6e7;
-color:#444;
-text-align:center;
+overflow:hidden;
 }
 
 .container{
-background:#fff0f6;
+position:relative;
+z-index:2;
+text-align:center;
+background:rgba(255,255,255,0.6);
 padding:40px;
 border-radius:20px;
-box-shadow:0 10px 30px rgba(0,0,0,0.1);
-max-width:400px;
+backdrop-filter: blur(10px);
 }
 
 h1{
-font-weight:600;
-margin-bottom:15px;
+color:#444;
 }
 
 #contador{
-font-size:28px;
-margin:20px 0;
-font-weight:600;
+font-size:25px;
+margin-top:20px;
 }
 
 .mensagem{
 display:none;
-font-size:18px;
+margin-top:20px;
+color:#444;
 line-height:1.6;
 }
 
-.nome{
-font-size:22px;
-font-weight:600;
-margin-bottom:15px;
+canvas{
+position:absolute;
+top:0;
+left:0;
+z-index:1;
+}
+
+.balloon{
+position:absolute;
+bottom:-100px;
+width:40px;
+height:50px;
+background:#ff9ecf;
+border-radius:50%;
+animation: subir 10s linear infinite;
+}
+
+@keyframes subir{
+0%{
+transform:translateY(0);
+}
+100%{
+transform:translateY(-120vh);
+}
 }
 
 </style>
@@ -64,28 +82,29 @@ margin-bottom:15px;
 
 <body>
 
+<canvas id="particles"></canvas>
+
 <div class="container">
 
-<h1>Algo bonito está chegando ✨</h1>
+<h1>Algo especial está chegando ✨</h1>
 
-<div class="nome">Larissa</div>
+<h2>Larissa</h2>
 
 <div id="contador"></div>
 
 <div class="mensagem" id="mensagem">
 
-Larissa,  
+Larissa,
 
-Você não é comum.  
-Você é daquelas pessoas raras,  
-que têm luz própria,  
-que transformam o ambiente,  
-que fazem tudo ficar mais leve.  
+Você é diferente.  
+Autêntica.  
+Daquelas pessoas que não passam despercebidas.  
 
-Seu jeito é único,  
-autêntico, bonito e diferente.  
+Seu jeito é arte,  
+seu sorriso é luz,  
+sua existência é algo raro.  
 
-O mundo fica mais interessante  
+O mundo fica mais bonito  
 simplesmente porque você existe.  
 
 Feliz aniversário ✨💗
@@ -96,12 +115,13 @@ Feliz aniversário ✨💗
 
 <script>
 
+// CONTAGEM
+
 var data = new Date("April 5, 2026 00:00:00").getTime();
 
 var x = setInterval(function(){
 
 var agora = new Date().getTime();
-
 var distancia = data - agora;
 
 var dias = Math.floor(distancia / (1000 * 60 * 60 * 24));
@@ -120,6 +140,64 @@ document.getElementById("mensagem").style.display = "block";
 }
 
 }, 1000);
+
+
+// BALÕES
+
+function criarBalao(){
+let balao = document.createElement("div");
+balao.classList.add("balloon");
+
+balao.style.left = Math.random() * 100 + "vw";
+balao.style.animationDuration = (5 + Math.random() * 5) + "s";
+
+document.body.appendChild(balao);
+
+setTimeout(()=>{
+balao.remove();
+},10000);
+}
+
+setInterval(criarBalao,1000);
+
+
+// PARTICULAS
+
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+
+for(let i=0;i<100;i++){
+particles.push({
+x: Math.random()*canvas.width,
+y: Math.random()*canvas.height,
+size: Math.random()*2,
+speed: Math.random()*1
+});
+}
+
+function animate(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+particles.forEach(p=>{
+p.y += p.speed;
+
+if(p.y > canvas.height){
+p.y = 0;
+}
+
+ctx.fillStyle = "white";
+ctx.fillRect(p.x,p.y,p.size,p.size);
+});
+
+requestAnimationFrame(animate);
+}
+
+animate();
 
 </script>
 
