@@ -16,69 +16,44 @@ font-family: Arial, Helvetica, sans-serif;
 }
 
 body{
-background:#ffd6e7;
-height:100vh;
+background: black;
 overflow:hidden;
+height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
-}
-
-.container{
-position:relative;
-z-index:2;
-background:rgba(255,255,255,0.7);
-padding:25px;
-border-radius:20px;
-text-align:center;
-width:90%;
-max-width:350px;
-backdrop-filter: blur(10px);
-}
-
-h1{
-font-size:18px;
-margin-bottom:10px;
-color:#444;
-}
-
-#contador{
-font-size:20px;
-font-weight:bold;
-color:#ff6fa5;
-}
-
-.mensagem{
-display:none;
-font-size:15px;
-line-height:1.6;
-color:#444;
+color:white;
 }
 
 canvas{
 position:absolute;
 top:0;
 left:0;
-z-index:1;
 }
 
-.balloon{
+.container{
 position:absolute;
-bottom:-100px;
-width:25px;
-height:35px;
-background:#ff8fb1;
-border-radius:50%;
-animation: subir linear infinite;
+top:20px;
+text-align:center;
+width:100%;
+z-index:2;
 }
 
-@keyframes subir{
-0%{
-transform:translateY(0);
+#contador{
+font-size:18px;
+letter-spacing:2px;
+color:#a0ffe6;
 }
-100%{
-transform:translateY(-120vh);
-}
+
+.mensagem{
+position:absolute;
+bottom:40px;
+width:100%;
+text-align:center;
+display:none;
+font-size:16px;
+line-height:1.6;
+padding:20px;
 }
 
 </style>
@@ -87,39 +62,32 @@ transform:translateY(-120vh);
 
 <body>
 
+<canvas id="aurora"></canvas>
 <canvas id="particles"></canvas>
 
 <div class="container">
-
-<h1>Algo bonito está chegando ✨</h1>
-
 <div id="contador"></div>
+</div>
 
 <div class="mensagem" id="mensagem">
 
 Larissa,
 
-Você é daquelas pessoas  
-que não passam despercebidas.  
-
-Autêntica, leve, diferente.  
-
-Seu jeito tem algo raro,  
-algo que não se explica  
+Você tem algo raro.  
+Algo que não se explica,  
 mas se sente.  
 
-O mundo fica mais bonito  
-quando você está nele.  
+Seu jeito é arte,  
+sua presença é luz,  
+sua essência é única.  
 
-Feliz aniversário ✨💗
-
-</div>
+Feliz aniversário ✨
 
 </div>
 
 <script>
 
-// CONTAGEM REGRESSIVA
+// CONTAGEM
 
 var data = new Date("April 5, 2026 00:00:00").getTime();
 
@@ -134,39 +102,45 @@ var minutos = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60));
 var segundos = Math.floor((distancia % (1000 * 60)) / 1000);
 
 document.getElementById("contador").innerHTML =
-dias + "d " + horas + "h " +
-minutos + "m " + segundos + "s ";
+dias+"d "+horas+"h "+minutos+"m "+segundos+"s";
 
-if (distancia < 0) {
+if(distancia < 0){
 clearInterval(x);
-document.getElementById("contador").style.display = "none";
-document.getElementById("mensagem").style.display = "block";
+document.getElementById("contador").style.display="none";
+document.getElementById("mensagem").style.display="block";
 }
 
-}, 1000);
+},1000);
 
 
-// BALÕES
+// AURORA BOREAL
 
-function criarBalao(){
-let balao = document.createElement("div");
+const aurora = document.getElementById("aurora");
+const actx = aurora.getContext("2d");
 
-balao.classList.add("balloon");
+aurora.width = window.innerWidth;
+aurora.height = window.innerHeight;
 
-balao.style.left = Math.random() * 100 + "vw";
-balao.style.animationDuration = (6 + Math.random() * 6) + "s";
+function drawAurora(){
 
-document.body.appendChild(balao);
+let gradient = actx.createLinearGradient(0,0,aurora.width,aurora.height);
 
-setTimeout(()=>{
-balao.remove();
-},12000);
+gradient.addColorStop(0,"#ff00ff22");
+gradient.addColorStop(0.3,"#00ffee22");
+gradient.addColorStop(0.6,"#7b00ff22");
+gradient.addColorStop(1,"#00ffcc22");
+
+actx.fillStyle = gradient;
+actx.fillRect(0,0,aurora.width,aurora.height);
+
+requestAnimationFrame(drawAurora);
+
 }
 
-setInterval(criarBalao,1200);
+drawAurora();
 
 
-// PARTICULAS LARISSA
+// PARTICULAS
 
 const canvas = document.getElementById("particles");
 const ctx = canvas.getContext("2d");
@@ -176,38 +150,38 @@ canvas.height = window.innerHeight;
 
 let particles = [];
 
-function criarTexto(){
+let image = new Image();
+image.src = "https://i.imgur.com/8Km9tLL.png"; // placeholder
 
-ctx.clearRect(0,0,canvas.width,canvas.height);
+image.onload = function(){
 
-ctx.fillStyle = "white";
-ctx.font = "bold 60px Arial";
-ctx.textAlign = "center";
+ctx.drawImage(image, canvas.width/4, canvas.height/6, 250, 350);
 
-ctx.fillText("Larissa", canvas.width/2, canvas.height/2);
+const data = ctx.getImageData(0,0,canvas.width,canvas.height);
 
-const textData = ctx.getImageData(0,0,canvas.width,canvas.height);
+for(let y=0;y<canvas.height;y+=4){
+for(let x=0;x<canvas.width;x+=4){
 
-particles = [];
+let index = (y * canvas.width + x) * 4;
 
-for(let y=0; y<canvas.height; y+=6){
-for(let x=0; x<canvas.width; x+=6){
+if(data.data[index+3] > 128){
 
-const index = (y * canvas.width + x) * 4;
-
-if(textData.data[index+3] > 128){
 particles.push({
-x: Math.random() * canvas.width,
-y: Math.random() * canvas.height,
-tx: x,
-ty: y
+x: Math.random()*canvas.width,
+y: Math.random()*canvas.height,
+tx:x,
+ty:y
 });
+
 }
 
 }
 }
 
+animate();
+
 }
+
 
 function animate(){
 
@@ -215,26 +189,17 @@ ctx.clearRect(0,0,canvas.width,canvas.height);
 
 particles.forEach(p=>{
 
-p.x += (p.tx - p.x) * 0.03;
-p.y += (p.ty - p.y) * 0.03;
+p.x += (p.tx - p.x) * 0.02;
+p.y += (p.ty - p.y) * 0.02;
 
-ctx.fillStyle = "#ff8fb1";
-ctx.fillRect(p.x, p.y, 2, 2);
+ctx.fillStyle = "rgba(255,0,255,0.8)";
+ctx.fillRect(p.x,p.y,1.5,1.5);
 
 });
 
 requestAnimationFrame(animate);
 
 }
-
-criarTexto();
-animate();
-
-window.addEventListener("resize", ()=>{
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-criarTexto();
-});
 
 </script>
 
