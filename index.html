@@ -12,16 +12,13 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family: Arial, Helvetica, sans-serif;
+font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 body{
-background: black;
+background:#050510;
 overflow:hidden;
 height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
 color:white;
 }
 
@@ -33,16 +30,24 @@ left:0;
 
 .container{
 position:absolute;
-top:20px;
-text-align:center;
+top:30px;
 width:100%;
-z-index:2;
+text-align:center;
+z-index:3;
 }
 
 #contador{
+font-size:16px;
+letter-spacing:3px;
+color:#c8fff5;
+opacity:0.8;
+}
+
+.nome{
+margin-top:10px;
 font-size:18px;
-letter-spacing:2px;
-color:#a0ffe6;
+opacity:0.7;
+letter-spacing:4px;
 }
 
 .mensagem{
@@ -51,9 +56,11 @@ bottom:40px;
 width:100%;
 text-align:center;
 display:none;
-font-size:16px;
+font-size:15px;
 line-height:1.6;
 padding:20px;
+color:#e0f7ff;
+opacity:0.9;
 }
 
 </style>
@@ -67,19 +74,20 @@ padding:20px;
 
 <div class="container">
 <div id="contador"></div>
+<div class="nome">Larissa</div>
 </div>
 
 <div class="mensagem" id="mensagem">
 
 Larissa,
 
-Você tem algo raro.  
-Algo que não se explica,  
-mas se sente.  
+Existe algo em você  
+que não se explica  
+apenas se sente.  
 
-Seu jeito é arte,  
-sua presença é luz,  
-sua essência é única.  
+Seu jeito é leve  
+sua presença é rara  
+sua essência é única  
 
 Feliz aniversário ✨
 
@@ -87,7 +95,7 @@ Feliz aniversário ✨
 
 <script>
 
-// CONTAGEM
+// CONTAGEM CORRETA
 
 var data = new Date("April 5, 2026 00:00:00").getTime();
 
@@ -113,7 +121,7 @@ document.getElementById("mensagem").style.display="block";
 },1000);
 
 
-// AURORA BOREAL
+// AURORA SUAVE
 
 const aurora = document.getElementById("aurora");
 const actx = aurora.getContext("2d");
@@ -121,17 +129,28 @@ const actx = aurora.getContext("2d");
 aurora.width = window.innerWidth;
 aurora.height = window.innerHeight;
 
+let hue = 0;
+
 function drawAurora(){
 
-let gradient = actx.createLinearGradient(0,0,aurora.width,aurora.height);
+actx.clearRect(0,0,aurora.width,aurora.height);
 
-gradient.addColorStop(0,"#ff00ff22");
-gradient.addColorStop(0.3,"#00ffee22");
-gradient.addColorStop(0.6,"#7b00ff22");
-gradient.addColorStop(1,"#00ffcc22");
+let gradient = actx.createLinearGradient(
+0,
+Math.sin(hue)*200,
+aurora.width,
+aurora.height
+);
+
+gradient.addColorStop(0,"rgba(180,0,255,0.05)");
+gradient.addColorStop(0.3,"rgba(0,255,200,0.05)");
+gradient.addColorStop(0.6,"rgba(255,0,180,0.05)");
+gradient.addColorStop(1,"rgba(0,200,255,0.05)");
 
 actx.fillStyle = gradient;
 actx.fillRect(0,0,aurora.width,aurora.height);
+
+hue += 0.003;
 
 requestAnimationFrame(drawAurora);
 
@@ -140,7 +159,7 @@ requestAnimationFrame(drawAurora);
 drawAurora();
 
 
-// PARTICULAS
+// PARTICULAS SUAVES
 
 const canvas = document.getElementById("particles");
 const ctx = canvas.getContext("2d");
@@ -150,38 +169,16 @@ canvas.height = window.innerHeight;
 
 let particles = [];
 
-let image = new Image();
-image.src = "https://i.imgur.com/8Km9tLL.png"; // placeholder
-
-image.onload = function(){
-
-ctx.drawImage(image, canvas.width/4, canvas.height/6, 250, 350);
-
-const data = ctx.getImageData(0,0,canvas.width,canvas.height);
-
-for(let y=0;y<canvas.height;y+=4){
-for(let x=0;x<canvas.width;x+=4){
-
-let index = (y * canvas.width + x) * 4;
-
-if(data.data[index+3] > 128){
+for(let i=0;i<120;i++){
 
 particles.push({
-x: Math.random()*canvas.width,
-y: Math.random()*canvas.height,
-tx:x,
-ty:y
-});
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+size:Math.random()*1.5,
+speed:Math.random()*0.2
+})
 
 }
-
-}
-}
-
-animate();
-
-}
-
 
 function animate(){
 
@@ -189,17 +186,24 @@ ctx.clearRect(0,0,canvas.width,canvas.height);
 
 particles.forEach(p=>{
 
-p.x += (p.tx - p.x) * 0.02;
-p.y += (p.ty - p.y) * 0.02;
+p.y += p.speed;
 
-ctx.fillStyle = "rgba(255,0,255,0.8)";
-ctx.fillRect(p.x,p.y,1.5,1.5);
+if(p.y > canvas.height){
+p.y = 0;
+}
+
+ctx.fillStyle="rgba(200,255,255,0.15)";
+ctx.beginPath();
+ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+ctx.fill();
 
 });
 
 requestAnimationFrame(animate);
 
 }
+
+animate();
 
 </script>
 
